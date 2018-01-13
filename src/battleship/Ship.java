@@ -10,11 +10,10 @@ public class Ship {
 	protected int hitsLeft;
 	protected Orientation orientation;
 
-	public Ship(String name, int size, Orientation o) {
+	public Ship(String name, int size) {
 		this.name = name;
 		this.size = size;
 		hitsLeft = size;
-		this.orientation = o;
 	}
 
 	public String name() {
@@ -29,7 +28,13 @@ public class Ship {
 		return hitsLeft <= 0;
 	}
 
-	public void placeOnGrid(Cell[][] grid, int x, int y) {
+	public void placeOnGrid(Cell[][] grid, int x, int y, char orientationChose) {
+		System.out.println(orientationChose);
+		if(orientationChose == 'H') {
+			this.orientation = Orientation.HORIZONTAL;
+		} else {
+			this.orientation = Orientation.VERTICAL;
+		}
 		for (int i = 0; i < size(); i++) {
 			grid[y][x].setShip(this);
 			if(this.orientation == Orientation.HORIZONTAL) {

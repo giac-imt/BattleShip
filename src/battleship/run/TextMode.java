@@ -11,11 +11,11 @@ import java.util.regex.Pattern;
 public class TextMode {
     public static final int WIDTH = 10, HEIGHT = 10;
     protected static final Pattern answerPattern = Pattern.compile("([a-j])\\s*(\\d+)|q", Pattern.CASE_INSENSITIVE);
+    protected static final Pattern answerPatternBoatPosition = Pattern.compile("([a-j])*(\\d+)*([h-v])", Pattern.CASE_INSENSITIVE);
 
     public static void main(String[] args) {
         Cell[][] grid = makeGrid();
         placeShips(grid);
-        System.out.println(isFinish(grid));
         play(grid);
     }
 
@@ -73,21 +73,22 @@ public class TextMode {
     	return true;
     }
 
-    protected static void placeShips(Cell[][] grid) {
-        Ship c = new Ship("Cruiser", 4, Ship.Orientation.HORIZONTAL);
-        c.placeOnGrid(grid, 2, 3);
+    protected static void placeShips(Cell[][] grid) {        
+        Ship[] tabShip = { new Ship("Cruiser", 4), new Ship("Frigate", 3), new Ship("Destroyer", 2), new Ship("Destroyer", 2) };
         
-        //TODO demander lettre transformé en int, int et enum H/V
-        //While(coordonnées ou orientation non exacte) continue;
-
-        Ship f = new Ship("Frigate", 3, Ship.Orientation.VERTICAL);
-        f.placeOnGrid(grid, 0, 1);
-
-        Ship d1 = new Ship("Destroyer", 2, Ship.Orientation.VERTICAL);
-        d1.placeOnGrid(grid, 4, 0);
-
-        Ship d2 = new Ship("Destroyer", 2, Ship.Orientation.VERTICAL);
-        d2.placeOnGrid(grid, 7, 1);
+        for(Ship ship : tabShip) {
+        	MatchResult position = askBoatPosition();
+            char letter = position.group(1).toUpperCase().charAt(0);
+            String number = position.group(2);
+            char orientation = position.group(3).toUpperCase().charAt(0);
+            int y = (int) letter - (int) 'A';
+            int x = Integer.valueOf(number) - 1;
+            try {
+                ship.placeOnGrid(grid, x, y, orientation);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.out.println("Invalid coordinates: " + position);
+            }
+        }
     }
 
     protected static void play(Cell[][] grid) {
@@ -121,6 +122,18 @@ public class TextMode {
             System.out.println("Drop a bomb where? [letter+number, or Q to give up]");
             String typedAnswer = new Scanner(System.in).nextLine().toUpperCase().trim();
             Matcher answerMatch = answerPattern.matcher(typedAnswer);
+            if (answerMatch.matches()) {
+                return answerMatch.toMatchResult();
+            }
+            System.out.println("Sorry, didn't understand thatâ€¦");
+        }
+    }
+    
+    protected static MatchResult askBoatPosition() {
+        while (true) {
+            System.out.println("Where do you want to place it ? [letter+number+orientation] (orientation : H or V)");
+            String typedAnswer = new Scanner(System.in).nextLine().toUpperCase().trim();
+            Matcher answerMatch = answerPatternBoatPosition.matcher(typedAnswer);
             if (answerMatch.matches()) {
                 return answerMatch.toMatchResult();
             }
