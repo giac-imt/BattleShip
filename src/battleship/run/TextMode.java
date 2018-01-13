@@ -83,10 +83,13 @@ public class TextMode {
             char orientation = position.group(3).toUpperCase().charAt(0);
             int y = (int) letter - (int) 'A';
             int x = Integer.valueOf(number) - 1;
-            try {
-                ship.placeOnGrid(grid, x, y, orientation);
-            } catch (ArrayIndexOutOfBoundsException e) {
-                System.out.println("Invalid coordinates: " + position);
+            while(true) {
+	            try {
+	                ship.placeOnGrid(grid, x, y, orientation);
+	                break;
+	            } catch (ArrayIndexOutOfBoundsException e) {
+	                System.out.println("Invalid coordinates: " + position);
+	            }
             }
         }
     }

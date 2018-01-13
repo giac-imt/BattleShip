@@ -29,12 +29,12 @@ public class Ship {
 	}
 
 	public void placeOnGrid(Cell[][] grid, int x, int y, char orientationChose) {
-		System.out.println(orientationChose);
 		if(orientationChose == 'H') {
 			this.orientation = Orientation.HORIZONTAL;
 		} else {
 			this.orientation = Orientation.VERTICAL;
 		}
+		System.out.println(grid[y][x]);
 		for (int i = 0; i < size(); i++) {
 			grid[y][x].setShip(this);
 			if(this.orientation == Orientation.HORIZONTAL) {
