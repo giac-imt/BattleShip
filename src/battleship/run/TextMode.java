@@ -15,6 +15,7 @@ public class TextMode {
     public static void main(String[] args) {
         Cell[][] grid = makeGrid();
         placeShips(grid);
+        System.out.println(isFinish(grid));
         play(grid);
     }
 
@@ -60,10 +61,24 @@ public class TextMode {
             System.out.println();
         }
     }
+    
+    protected static boolean isFinish(Cell[][] grid) {
+    	for (Cell[] eachRow : grid) {
+            for (Cell eachCell : eachRow) {
+            	if(eachCell.color(true) == Cell.Color.SHIP) {
+            		return false;
+            	}
+        	}
+        }
+    	return true;
+    }
 
     protected static void placeShips(Cell[][] grid) {
         Ship c = new Ship("Cruiser", 4, Ship.Orientation.HORIZONTAL);
         c.placeOnGrid(grid, 2, 3);
+        
+        //TODO demander lettre transformé en int, int et enum H/V
+        //While(coordonnées ou orientation non exacte) continue;
 
         Ship f = new Ship("Frigate", 3, Ship.Orientation.VERTICAL);
         f.placeOnGrid(grid, 0, 1);
@@ -78,6 +93,10 @@ public class TextMode {
     protected static void play(Cell[][] grid) {
         while (true) {
             showGrid(grid);
+        	if(isFinish(grid)) {
+        		System.out.println("Nice, you win !");
+        		break;
+        	}
             MatchResult answer = askNextMove();
             if (answer.group(0).equals("Q")) {
                 showGrid(grid, true);
