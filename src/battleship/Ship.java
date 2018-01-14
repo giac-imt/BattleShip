@@ -1,5 +1,7 @@
 package battleship;
 
+import battleship.run.TextMode;
+
 public class Ship {
 	public enum Orientation {
 		HORIZONTAL, VERTICAL
@@ -9,6 +11,7 @@ public class Ship {
 	protected int size;
 	protected int hitsLeft;
 	protected Orientation orientation;
+	protected static int[][] takenCell = new int[TextMode.HEIGHT][TextMode.WIDTH];
 
 	public Ship(String name, int size) {
 		this.name = name;
@@ -28,20 +31,27 @@ public class Ship {
 		return hitsLeft <= 0;
 	}
 
-	public void placeOnGrid(Cell[][] grid, int x, int y, char orientationChose) {
+	public void placeOnGrid(Cell[][] grid, int x, int y, char orientationChose) throws Exception {
 		if(orientationChose == 'H') {
 			this.orientation = Orientation.HORIZONTAL;
 		} else {
 			this.orientation = Orientation.VERTICAL;
 		}
-		System.out.println(grid[y][x]);
 		for (int i = 0; i < size(); i++) {
-			grid[y][x].setShip(this);
-			if(this.orientation == Orientation.HORIZONTAL) {
-				x++;
-			} else {
-				y++;				
-			}
+			while(true) {
+				if(takenCell[y][x] != 1) {
+					grid[y][x].setShip(this);
+					takenCell[y][x] = 1;
+					
+					if(this.orientation == Orientation.HORIZONTAL) {
+						x++;
+					} else {
+						y++;				
+					}
+		            break;	
+				}
+				throw new Exception();
+            }
 		}
 	}
 

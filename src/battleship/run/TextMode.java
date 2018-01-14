@@ -77,19 +77,22 @@ public class TextMode {
         Ship[] tabShip = { new Ship("Cruiser", 4), new Ship("Frigate", 3), new Ship("Destroyer", 2), new Ship("Destroyer", 2) };
         
         for(Ship ship : tabShip) {
-        	MatchResult position = askBoatPosition();
-            char letter = position.group(1).toUpperCase().charAt(0);
-            String number = position.group(2);
-            char orientation = position.group(3).toUpperCase().charAt(0);
-            int y = (int) letter - (int) 'A';
-            int x = Integer.valueOf(number) - 1;
+        	
             while(true) {
 	            try {
+	            	MatchResult position = askBoatPosition();
+		            char letter = position.group(1).toUpperCase().charAt(0);
+		            String number = position.group(2);
+		            char orientation = position.group(3).toUpperCase().charAt(0);
+		            int y = (int) letter - (int) 'A';
+		            int x = Integer.valueOf(number) - 1;
 	                ship.placeOnGrid(grid, x, y, orientation);
 	                break;
 	            } catch (ArrayIndexOutOfBoundsException e) {
-	                System.out.println("Invalid coordinates: " + position);
-	            }
+	                System.out.println("Invalid coordinates: ");
+	            } catch (Exception e) {
+	                System.out.println("Position already chosen: ");
+				}
             }
         }
     }
