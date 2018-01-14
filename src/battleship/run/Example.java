@@ -14,17 +14,17 @@ public class Example {
 			}
 		}
 
-		Ship c = new Ship("Cruiser", 4, Ship.Orientation.VERTICAL);
-		c.placeOnGrid(grid, 2, 0);
-
-		Ship f = new Ship("Frigate", 3, Ship.Orientation.VERTICAL);
-		f.placeOnGrid(grid, 0, 0);
-
-		Ship d1 = new Ship("Destroyer", 2, Ship.Orientation.VERTICAL);
-		d1.placeOnGrid(grid, 2, 3);
-
-		Ship d2 = new Ship("Destroyer", 2, Ship.Orientation.VERTICAL);
-		d2.placeOnGrid(grid, 7, 1);
+		Ship c = new Ship("Cruiser", 4);
+		Ship f = new Ship("Frigate", 3);
+		Ship d1 = new Ship("Destroyer", 2);
+		Ship d2 = new Ship("Destroyer", 2);
+		
+		try {
+			c.placeOnGrid(grid, 2, 0, 'V');
+			f.placeOnGrid(grid, 0, 0, 'V');
+			d1.placeOnGrid(grid, 2, 3, 'V');
+			d2.placeOnGrid(grid, 7, 1, 'V');
+		} catch (Exception e) {	}
 
 		grid[5][5].bomb(); // dans l'eau
 

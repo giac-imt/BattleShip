@@ -61,4 +61,9 @@ public class Ship {
 			System.out.println("Oh no, my " + name() + "!");
 		}
 	}
+
+	public void setOrientation(Orientation orientation) {
+		this.orientation = orientation;
+	}
+	
 }

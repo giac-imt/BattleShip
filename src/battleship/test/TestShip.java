@@ -1,10 +1,14 @@
 package battleship.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Before;
 import org.junit.Test;
-import battleship.Ship;
 
-import static org.junit.Assert.*;
+import battleship.Ship;
+import battleship.Ship.Orientation;
 
 public class TestShip {
 
@@ -12,7 +16,8 @@ public class TestShip {
 
     @Before
     public void setUp() {
-        ship = new Ship("Chalutier", 5, Ship.Orientation.HORIZONTAL);
+        ship = new Ship("Chalutier", 5);
+        ship.setOrientation(Orientation.VERTICAL);
     }
 
     @Test
