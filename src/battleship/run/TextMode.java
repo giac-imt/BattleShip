@@ -1,12 +1,12 @@
 package battleship.run;
 
-import battleship.Cell;
-import battleship.Ship;
-
 import java.util.Scanner;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import battleship.Cell;
+import battleship.Ship;
 
 public class TextMode {
     public static final int WIDTH = 10, HEIGHT = 10;

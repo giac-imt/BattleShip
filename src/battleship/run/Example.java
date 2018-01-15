@@ -29,7 +29,7 @@ public class Example {
 		grid[5][5].bomb(); // dans l'eau
 
 		grid[0][0].bomb(); // touché
-		grid[0][1].bomb(); // touché
-		grid[0][2].bomb(); // frégate coulée !
+		grid[1][0].bomb(); // touché
+		grid[2][0].bomb(); // frégate coulée !
 	}
 }
