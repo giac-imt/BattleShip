@@ -18,13 +18,14 @@ public class Example {
 		Ship f = new Ship("Frigate", 3);
 		Ship d1 = new Ship("Destroyer", 2);
 		Ship d2 = new Ship("Destroyer", 2);
-		
+
 		try {
 			c.placeOnGrid(grid, 2, 0, 'V');
 			f.placeOnGrid(grid, 0, 0, 'V');
 			d1.placeOnGrid(grid, 2, 3, 'V');
 			d2.placeOnGrid(grid, 7, 1, 'V');
-		} catch (Exception e) {	}
+		} catch (Exception e) {
+		}
 
 		grid[5][5].bomb(); // dans l'eau
 
