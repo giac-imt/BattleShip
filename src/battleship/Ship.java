@@ -9,7 +9,6 @@ public class Ship {
 	protected int size;
 	protected int hitsLeft;
 	protected Orientation orientation;
-	protected static int[][] takenCell = new int[Fleet.HEIGHT][Fleet.WIDTH];
 
 	public Ship(String name, int size) {
 		this.name = name;
@@ -36,20 +35,19 @@ public class Ship {
 			this.orientation = Orientation.VERTICAL;
 		}
 		for (int i = 0; i < size(); i++) {
-			while(true) {
-				if(takenCell[y][x] != 1) {
+			while (true) {
+				if (Fleet.grid[y][x].hasShip == false) {
 					Fleet.grid[y][x].setShip(this);
-					takenCell[y][x] = 1;
-					
-					if(this.orientation == Orientation.HORIZONTAL) {
+
+					if (this.orientation == Orientation.HORIZONTAL) {
 						x++;
 					} else {
-						y++;				
+						y++;
 					}
-		            break;	
+					break;
 				}
 				throw new Exception();
-            }
+			}
 		}
 	}
 
@@ -63,5 +61,5 @@ public class Ship {
 	public void setOrientation(Orientation orientation) {
 		this.orientation = orientation;
 	}
-	
+
 }

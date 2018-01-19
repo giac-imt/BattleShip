@@ -5,11 +5,17 @@ public class Cell {
 		WATER, SHIP, SPLASH, FIRE
 	}
 
-	protected Ship ship;
+	public Ship ship;
 	protected boolean bombed;
+	protected boolean hasShip = false;
+
+	public Ship getShip() {
+		return this.ship;
+	}
 
 	public void setShip(Ship ship) {
 		this.ship = ship;
+		this.hasShip = true;
 	}
 
 	public void bomb() {

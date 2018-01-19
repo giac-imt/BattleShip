@@ -49,10 +49,11 @@ public class TextMode {
 	                System.out.println("Invalid coordinates: ");
 	            } catch (Exception e) {
 	                System.out.println("Position already chosen: ");
+
 				}
-            }
-        }
-    }
+			}
+		}
+	}
 
     protected static void play() {
         while (true) {

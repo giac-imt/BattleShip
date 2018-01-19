@@ -18,7 +18,7 @@ public class Example {
 		Ship f = new Ship("Frigate", 3);
 		Ship d1 = new Ship("Destroyer", 2);
 		Ship d2 = new Ship("Destroyer", 2);
-		
+
 		try {
 			c.placeOnGrid(2, 0, 'V');
 			f.placeOnGrid(0, 0, 'V');
