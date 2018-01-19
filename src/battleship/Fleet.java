@@ -16,8 +16,7 @@ public class Fleet {
         return grid;
     }
 
-
-    public static void showGrid() { showGrid(false); }
+	public static void showGrid() { showGrid(false); }
 
     public static void showGrid(boolean visibleShips) {
         System.out.print(' ');
@@ -48,5 +47,10 @@ public class Fleet {
             }
             System.out.println();
         }
+    }
+
+    public static boolean canPlaceShip(int x, int y, Ship.Orientation o) {
+    	
+    	return true;
     }
 }

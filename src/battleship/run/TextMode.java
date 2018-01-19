@@ -13,6 +13,10 @@ public class TextMode {
     protected static final Pattern answerPattern = Pattern.compile("([a-j])\\s*(\\d+)|q", Pattern.CASE_INSENSITIVE);
     
     protected static final Pattern answerPatternBoatPosition = Pattern.compile("([a-j])*(\\d+)*([h-v])", Pattern.CASE_INSENSITIVE);
+    
+    protected static final String askNextMove = "Drop a bomb where? [letter+number, or Q to give up]";
+    
+    protected static final String askBoatPosition = "Where do you want to place it ? [letter+number+orientation] (orientation : H or V)";
 
     public static void main(String[] args) {
         Fleet.makeGrid();
@@ -37,7 +41,7 @@ public class TextMode {
         	
             while(true) {
 	            try {
-	            	MatchResult position = askBoatPosition();
+	            	MatchResult position = askUser(askBoatPosition, answerPatternBoatPosition);
 		            char letter = position.group(1).toUpperCase().charAt(0);
 		            String number = position.group(2);
 		            char orientation = position.group(3).toUpperCase().charAt(0);
@@ -62,7 +66,7 @@ public class TextMode {
         		System.out.println("Nice, you win !");
         		break;
         	}
-            MatchResult answer = askNextMove();
+            MatchResult answer = askUser(askNextMove, answerPattern);
             if (answer.group(0).equals("Q")) {
                 Fleet.showGrid(true);
                 System.out.println("Ok, bye! Here's the final state of affairs:");
@@ -82,24 +86,11 @@ public class TextMode {
     }
 
     @SuppressWarnings("resource")
-	protected static MatchResult askNextMove() {
+	protected static MatchResult askUser(String question, Pattern p) {
         while (true) {
-            System.out.println("Drop a bomb where? [letter+number, or Q to give up]");
+            System.out.println(question);
             String typedAnswer = new Scanner(System.in).nextLine().toUpperCase().trim();
-            Matcher answerMatch = answerPattern.matcher(typedAnswer);
-            if (answerMatch.matches()) {
-                return answerMatch.toMatchResult();
-            }
-            System.out.println("Sorry, didn't understand that…");
-        }
-    }
-    
-    @SuppressWarnings("resource")
-	protected static MatchResult askBoatPosition() {
-        while (true) {
-            System.out.println("Where do you want to place it ? [letter+number+orientation] (orientation : H or V)");
-            String typedAnswer = new Scanner(System.in).nextLine().toUpperCase().trim();
-            Matcher answerMatch = answerPatternBoatPosition.matcher(typedAnswer);
+            Matcher answerMatch = p.matcher(typedAnswer);
             if (answerMatch.matches()) {
                 return answerMatch.toMatchResult();
             }
