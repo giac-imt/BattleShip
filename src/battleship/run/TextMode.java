@@ -7,63 +7,21 @@ import java.util.regex.Pattern;
 
 import battleship.Cell;
 import battleship.Ship;
+import battleship.Fleet;
 
 public class TextMode {
-    public static final int WIDTH = 10, HEIGHT = 10;
     protected static final Pattern answerPattern = Pattern.compile("([a-j])\\s*(\\d+)|q", Pattern.CASE_INSENSITIVE);
+    
     protected static final Pattern answerPatternBoatPosition = Pattern.compile("([a-j])*(\\d+)*([h-v])", Pattern.CASE_INSENSITIVE);
 
     public static void main(String[] args) {
-        Cell[][] grid = makeGrid();
-        placeShips(grid);
-        play(grid);
-    }
-
-    protected static Cell[][] makeGrid() {
-        Cell[][] grid = new Cell[HEIGHT][WIDTH];
-        for (int j = 0; j < HEIGHT; j++) {
-            for (int i = 0; i < WIDTH; i++) {
-                grid[i][j] = new Cell();
-            }
-        }
-        return grid;
-    }
-
-    protected static void showGrid(Cell[][] grid) { showGrid(grid, false); }
-
-    protected static void showGrid(Cell[][] grid, boolean visibleShips) {
-        System.out.print(' ');
-        for (int x = 1; x <= WIDTH; x++) {
-            System.out.printf(" %d", x);
-        }
-        System.out.println();
-
-        char y = 'a';
-        for (Cell[] eachRow : grid) {
-            System.out.print(y);
-            y = (char) ((int) y + 1);
-            for (Cell eachCell : eachRow) {
-                switch (eachCell.color(visibleShips)) {
-                    case WATER:
-                        System.out.print(" ~");
-                        break;
-                    case SHIP:
-                        System.out.print(" #");
-                        break;
-                    case SPLASH:
-                        System.out.print(" @");
-                        break;
-                    case FIRE:
-                        System.out.print(" X");
-                        break;
-                }
-            }
-            System.out.println();
-        }
+        Fleet.makeGrid();
+        placeShips();
+        play();
     }
     
-    protected static boolean isFinish(Cell[][] grid) {
-    	for (Cell[] eachRow : grid) {
+    protected static boolean isFinish() {
+    	for (Cell[] eachRow : Fleet.grid) {
             for (Cell eachCell : eachRow) {
             	if(eachCell.color(true) == Cell.Color.SHIP) {
             		return false;
@@ -73,10 +31,9 @@ public class TextMode {
     	return true;
     }
 
-    protected static void placeShips(Cell[][] grid) {        
-        Ship[] tabShip = { new Ship("Cruiser", 4), new Ship("Frigate", 3), new Ship("Destroyer", 2), new Ship("Destroyer", 2) };
+    protected static void placeShips() {
         
-        for(Ship ship : tabShip) {
+        for(Ship ship : Fleet.tabShip) {
         	
             while(true) {
 	            try {
@@ -86,7 +43,7 @@ public class TextMode {
 		            char orientation = position.group(3).toUpperCase().charAt(0);
 		            int y = (int) letter - (int) 'A';
 		            int x = Integer.valueOf(number) - 1;
-	                ship.placeOnGrid(grid, x, y, orientation);
+	                ship.placeOnGrid(x, y, orientation);
 	                break;
 	            } catch (ArrayIndexOutOfBoundsException e) {
 	                System.out.println("Invalid coordinates: ");
@@ -97,16 +54,16 @@ public class TextMode {
         }
     }
 
-    protected static void play(Cell[][] grid) {
+    protected static void play() {
         while (true) {
-            showGrid(grid);
-        	if(isFinish(grid)) {
+            Fleet.showGrid();
+        	if(isFinish()) {
         		System.out.println("Nice, you win !");
         		break;
         	}
             MatchResult answer = askNextMove();
             if (answer.group(0).equals("Q")) {
-                showGrid(grid, true);
+                Fleet.showGrid(true);
                 System.out.println("Ok, bye! Here's the final state of affairs:");
                 break;
             } else {
@@ -115,7 +72,7 @@ public class TextMode {
                 int y = (int) letter - (int) 'A';
                 int x = Integer.valueOf(number) - 1;
                 try {
-                    grid[y][x].bomb();
+                	Fleet.grid[y][x].bomb();
                 } catch (ArrayIndexOutOfBoundsException e) {
                     System.out.println("Invalid coordinates: " + answer);
                 }
@@ -123,7 +80,8 @@ public class TextMode {
         }
     }
 
-    protected static MatchResult askNextMove() {
+    @SuppressWarnings("resource")
+	protected static MatchResult askNextMove() {
         while (true) {
             System.out.println("Drop a bomb where? [letter+number, or Q to give up]");
             String typedAnswer = new Scanner(System.in).nextLine().toUpperCase().trim();
@@ -135,7 +93,8 @@ public class TextMode {
         }
     }
     
-    protected static MatchResult askBoatPosition() {
+    @SuppressWarnings("resource")
+	protected static MatchResult askBoatPosition() {
         while (true) {
             System.out.println("Where do you want to place it ? [letter+number+orientation] (orientation : H or V)");
             String typedAnswer = new Scanner(System.in).nextLine().toUpperCase().trim();
